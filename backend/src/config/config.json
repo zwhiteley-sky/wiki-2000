@@ -2,7 +2,6 @@
   "development": {
     "dialect": "sqlite",
     "storage": "../database/db.sqlite",
-    "logging": true,
     "define": {
       "underscored": true,
       "timestamps": false
