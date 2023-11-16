@@ -1,0 +1,35 @@
+@font-face {
+    font-family: "Work Sans";
+    src: url(assets/fonts/WorkSans-Thin.ttf);
+    font-style: normal;
+    font-weight: 100;
+}
+
+@font-face {
+    font-family: "Work Sans";
+    src: url(assets/fonts/WorkSans-ExtraLight.ttf);
+    font-style: normal;
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: "Work Sans";
+    src: url(assets/fonts/WorkSans-Light.ttf);
+    font-style: normal;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Work Sans";
+    src: url(assets/fonts/WorkSans-Regular.ttf);
+    font-style: normal;
+    font-weight: 400;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: "Work Sans";
+}
