@@ -1,0 +1,74 @@
+.container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    box-shadow: none;
+    margin: 2rem 0;
+
+    input {
+        font-size: 2rem;
+        padding: 0;
+        padding-left: calc(2rem + 4px);
+        margin-left: 2rem;
+        outline: none;
+        border: 2px black solid;
+        border-radius: 2rem;
+        box-shadow: none;
+        text-shadow: none;
+    }
+
+    .circle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        position: absolute;
+        left: 0;
+        background-color: white;
+        border: 2px solid black;
+        border-radius: 50%;
+        width: 4rem;
+        height: 4rem;
+        outline: none;
+    }
+
+    &.valid {
+        input {
+            outline: none;
+            border: 2px darkgreen solid;
+            background: linear-gradient(to right, rgb(0, 255, 38), rgb(0, 210, 32));
+        }
+
+        .circle {
+            outline: none;
+            border: 2px darkgreen solid;
+            background: linear-gradient(to right, rgb(13, 255, 0), rgb(0, 255, 38));
+        }
+    }
+
+    &.invalid {
+        input {
+            outline: none;
+            border: 2px darkred solid;
+            background: linear-gradient(to right, rgb(221, 48, 0), rgb(255, 0, 0));
+        }
+
+        .circle {
+            outline: none;
+            border: 2px darkred solid;
+            background: linear-gradient(to right, rgb(255, 132, 0), rgb(221, 48, 0));
+        }
+    }
+
+    input:focus {
+        outline: none;
+        background: white;
+        border: 2px blue solid;
+    }
+
+    input:focus + .circle {
+        outline: none;
+        background: white;
+        border: 2px blue solid;
+    }
+}
