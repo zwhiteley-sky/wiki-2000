@@ -10,6 +10,7 @@ import Index from './pages/Index.tsx';
 import { AuthProvider } from './components/AuthProvider.tsx';
 import Article from './pages/Article.tsx';
 import Login, { login_loader } from './pages/Login.tsx';
+import Register, { register_loader } from './pages/Register.tsx';
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,11 @@ const router = createBrowserRouter([
                         path: "login",
                         element: <Login />,
                         loader: login_loader,
+                    },
+                    {
+                        path: "register",
+                        element: <Register />,
+                        loader: register_loader
                     }
                 ]
             }

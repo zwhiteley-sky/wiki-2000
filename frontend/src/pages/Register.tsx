@@ -5,7 +5,9 @@ import styles from "./Login.module.scss";
 import { useAuthState } from "../components/AuthProvider";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 
-export function login_loader({ request }: { request: Request }) {
+const NAME_REGEX = /^[a-zA-Z ]+$/;
+
+export function register_loader({ request }: { request: Request }) {
     const url = new URL(request.url);
     let redirect = url.searchParams.get("redirect");
 
@@ -17,20 +19,22 @@ export function login_loader({ request }: { request: Request }) {
     return { redirect };
 }
 
-export default function Login() {
+export default function Register() {
     // The current login information
-    const [auth, login, , ] = useAuthState();
+    const [auth, , register, ] = useAuthState();
     
     // The form fields
+    const [name, set_name] = useState("");
     const [email, set_email] = useState("");
     const [password, set_password] = useState("");
+    const [repeat_password, set_repeat_password] = useState("");
     
     // Whether the button is disabled
     const [disabled, set_disabled] = useState(true);
     
     // Whether the details provided were invalid
     // (used to show "invalid email or password" message)
-    const [invalid_details, set_invalid_details] = useState(false);
+    const [email_taken, set_email_taken] = useState(false);
     
     // The path to redirect to upon successful login
     const { redirect } = useLoaderData() as { redirect: string };
@@ -67,7 +71,7 @@ export default function Login() {
         if (disabled) return;
 
         // Validate the email and password
-        if (!EmailValidator.validate(email) || !password) {
+        if (!NAME_REGEX.test(name) || !EmailValidator.validate(email) || !password) {
             return;
         }
 
@@ -75,30 +79,42 @@ export default function Login() {
         set_disabled(true);
         
         // Log the user in
-        const result = await login(email, password);
+        const result = await register(name, email, password);
 
         // If the details were correct, redirect the user
         // to the correct path
-        if (result) navigate(redirect);
-        else { 
+        if (result === "success") navigate("/login?redirect=" + encodeURIComponent(redirect));
+        else if (result === "email-taken") { 
             // Otherwise, if they details were incorrect,
             // re-enable the button (to allow a second login
             // attempt and show the "invalid email or password"
             // prompt)
             set_disabled(false);
-            set_invalid_details(true);
-        }
+            set_email_taken(true);
+        } else set_disabled(false);
     }
+
+    // Whether the name is valid
+    const name_valid = NAME_REGEX.test(name);
 
     // Whether the email is valid
     const email_valid = EmailValidator.validate(email);
     
     // Whether the password is valid
     const password_valid = !!password;
+    const repeat_valid = password === repeat_password;
 
     return (
         <form className={styles.box} onSubmit={(event) => handler_submit(event)}>
-            <h1>Login</h1>
+            <h1>Register</h1>
+            <LoginInput 
+                name="name" 
+                symbol="️😀"
+                placeholder="Name"
+                state={name_valid ? "valid" : "invalid"}
+                value={name}
+                onChange={set_name}
+            />
             <LoginInput 
                 name="email" 
                 symbol="✉️"
@@ -116,13 +132,32 @@ export default function Login() {
                 value={password}
                 onChange={set_password}
             />
+            <LoginInput
+                name="repeat-password"
+                symbol="🗝️"
+                type="password"
+                placeholder="Repeat Password"
+                state={repeat_valid ? "valid" : "invalid"}
+                value={repeat_password}
+                onChange={set_repeat_password}
+            />
             <div style={{
-                display: invalid_details ? "block" : "none",
+                display: email_taken ? "block" : "none",
                 color: "red",
-            }}>Invalid email or password</div>
-            <input type="submit" value="Login!" disabled={disabled || !email_valid || !password_valid}></input>
+            }}>Email is taken</div>
+            <input 
+                type="submit" 
+                value="Register!" 
+                disabled={
+                    disabled || 
+                    !name_valid ||
+                    !email_valid || 
+                    !password_valid ||
+                    !repeat_valid
+                }
+            />
             <br /><br />
-            <Link to="/register">Register instead?</Link>
+            <Link to="/login">Login instead?</Link>
         </form>
     )
 }
