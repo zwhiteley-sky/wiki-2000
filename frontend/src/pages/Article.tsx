@@ -7,3 +7,5 @@ export default function Article() {
         <h1>Individual article page</h1>
     );
 }
+
+// I will start work soon
