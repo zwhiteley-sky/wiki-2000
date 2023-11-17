@@ -1,0 +1,28 @@
+.box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 30px;
+    padding: 20px;
+    box-shadow: 2px 2px 5px 0 black;
+    text-align: center;
+
+    input[type="submit"] {
+        border: none;
+        outline: none;
+        font-size: 3rem;
+        padding: 10px 50px;
+        border-radius: 30px;
+        background: linear-gradient(to bottom right, rgb(0, 183, 255), rgb(0, 94, 255));
+
+        &:hover {
+            background: linear-gradient(to bottom right, rgb(0, 183, 255), rgb(0, 225, 255));
+        }
+
+        &:disabled {
+            color: lightgray;
+            background: linear-gradient(to bottom right, rgb(153, 153, 153), rgb(77, 77, 77));
+        }
+    }
+}

@@ -32,6 +32,11 @@ export type Loading = {
 };
 
 /**
+ * The result of the register method.
+ */
+export type RegisterResult = "success" | "unknown" | "email-taken";
+
+/**
  * The key for the authentication entry in local storage.
  */
 const AUTH_STORAGE_KEY = "auth";
@@ -84,6 +89,7 @@ export function AuthProvider() {
 export function useAuthState(): [
     AuthState,
     (email: string, password: string) => Promise<boolean>,
+    (name: string, email: string, password: string) => Promise<RegisterResult>,
     () => Promise<void>
 ] {
     const auth_state = useContext(auth_context);
@@ -110,10 +116,27 @@ export function useAuthState(): [
         return true;
     }
 
+    async function register(name: string, email: string, password: string): Promise<RegisterResult> {
+        const response = await fetch("http://localhost:3000/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name, email, password
+            })
+        });
+
+        if (response.status === 403) return "email-taken";
+        if (response.status !== 204) return "unknown";
+
+        return "success";
+    }
+
     async function logout(): Promise<void> {
         localStorage.removeItem(AUTH_STORAGE_KEY);
         set_auth_state!({ status: "logged-out" });
     }
 
-    return [auth_state, login, logout];
+    return [auth_state, login, register, logout];
 }
