@@ -6,8 +6,9 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import Index, { index_loader } from './pages/Index.tsx';
+import Index from './pages/Index.tsx';
 import { AuthProvider } from './components/AuthProvider.tsx';
+import Article from './pages/Article.tsx';
 
 const router = createBrowserRouter([
     {
@@ -21,8 +22,11 @@ const router = createBrowserRouter([
                 children: [
                     {
                         index: true,
-                        element: <Index />,
-                        loader: index_loader
+                        element: <Index />
+                    },
+                    {
+                        path: ":id",
+                        element: <Article />
                     }
                 ]
             }
